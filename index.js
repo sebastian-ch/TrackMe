@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const Request = require('request')
+const csv = require('csvtojson')
 const app = express()
 const port = 3000
 
@@ -45,13 +46,26 @@ function saveToCsv(nData) {
         nData["Altitude(ft)"].toString() + "," +
         nData.Accuracy.toString() + '\r\n';
 
-
     fs.appendFile('data/file.csv', csv, function (err) {
         if (err) throw err;
         console.log('file updated!');
     });
 
+    //sendToEndpoint();
 }
+
+/////in case I don't wanna use the CSV thingy I'm doing atm
+/*function sendToEndpoint() {
+
+    app.get('/data', (req, res) => {
+
+        csv()
+            .fromFile('data/file.csv')
+            .then((jsonObj) => {
+                res.json(jsonObj)
+            })
+    })
+} */
 
 app.get('/', function (req, res) {
 
