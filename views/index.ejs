@@ -9,8 +9,6 @@
     <link href="style/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
 
-
-
 </head>
 
 <body>
@@ -20,12 +18,19 @@
     <script src="https://npmcdn.com/csv2geojson@latest/csv2geojson.js"></script>
 
 
-    <div class='sidebar'>Sidebar</div>
+    <div class='sidebar'>
+        <div class='text-side'>
+        <p>Where am I!</p>
+        <p>This app shows where I am and puts it on a map.</p>
+
+    </div>
+
+    </div>
     <div id='map'></div>
     <script>
         var map = L.map('map', {
             center: [48.208, 16.371],
-            zoom: 7
+            zoom: 15
         });
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
@@ -74,7 +79,7 @@
 
             //send the non duplicates
             addToMap(result)
-            console.log(result);
+            //console.log(result);
 
 
         }
@@ -89,7 +94,7 @@
                         opacity: 0.5,
                         weight: 1,
                         fillOpacity: 0.5,
-                        radius: 6
+                        radius: 7
                     })
                 }
             }).addTo(group)

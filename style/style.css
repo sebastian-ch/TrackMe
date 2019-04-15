@@ -10,6 +10,13 @@ body {
 
   .sidebar {
     width: 30%;
+    margin: 10px;
+    
+    text-align: center;
+
+  }
+  .text-side{
+    width: 80%;
   }
   
   #map {
