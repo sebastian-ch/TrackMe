@@ -18,6 +18,9 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 var url = 'http://www.followmee.com/api/tracks.aspx?key=6ff60367d512c2e80cffb15a08c997a9&username=sebastianch&output=json&function=currentforalldevices';
 
+getMyData();
+setInterval(getMyData, 300000)
+
 function getMyData() {
 
     Request.get(url, (err, resp, body) => {
@@ -69,7 +72,5 @@ function saveToCsv(nData) {
 
 app.get('/', function (req, res) {
 
-    getMyData();
-    setInterval(getMyData, 300000)
     res.render('index.ejs');
 });
