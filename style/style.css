@@ -1,0 +1,23 @@
+body {
+    background: #404040;
+    color: #f8f8f8;
+    font: 500 20px/26px 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+
+  .sidebar {
+    width: 30%;
+  }
+  
+  #map {
+    
+    border-left: solid white 1px;
+    position: absolute;
+    left: 30%;
+    width: 69%;
+    top: 0;
+    bottom: 0;
+  }

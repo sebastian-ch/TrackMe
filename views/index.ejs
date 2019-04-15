@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>Where Is Sebastian!</title>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <link href="style/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+
+
+
+</head>
+
+<body>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://npmcdn.com/csv2geojson@latest/csv2geojson.js"></script>
+
+
+    <div class='sidebar'>Sidebar</div>
+    <div id='map'></div>
+    <script>
+        var map = L.map('map', {
+            center: [48.208, 16.371],
+            zoom: 7
+        });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+
+         getData();
+
+        function getData() {
+
+            d3.csv('data/file.csv').then(function (data) {
+                csv2geojson.csv2geojson(data, {
+                    latfield: 'Latitude',
+                    lonfield: 'Longitude',
+                    delimiter: ','
+                }, function (err, data) {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        //console.log(data)
+                        addToMap(data)
+                    }
+                });
+            })
+        }
+
+        function addToMap(data) {
+            L.geoJson(data, {
+                pointToLayer: function (feature, ll) {
+                    return L.circleMarker(ll, {
+                        opacity: 0.5,
+                        weight: 1,
+                        fillOpacity: 0.5,
+                        radius: 6
+                    })
+                }
+            }).addTo(map)
+        }
+    </script>
+</body>
+
+</html>
