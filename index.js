@@ -15,7 +15,6 @@ app.use("/style", express.static(__dirname + "/style"));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
-var apiKey = '6ff60367d512c2e80cffb15a08c997a9';
 var url = 'http://www.followmee.com/api/tracks.aspx?key=6ff60367d512c2e80cffb15a08c997a9&username=sebastianch&output=json&function=currentforalldevices';
 
 function getMyData() {
