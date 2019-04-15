@@ -34,8 +34,8 @@
             maxZoom: 19
         }).addTo(map);
 
-
-         getData();
+        var group = L.layerGroup();
+        getData();
 
         function getData() {
 
@@ -49,14 +49,41 @@
                         console.log(err)
                     } else {
                         //console.log(data)
-                        addToMap(data)
+                        dontAddDupes(data)
                     }
                 });
             })
         }
 
-        function addToMap(data) {
-            L.geoJson(data, {
+        function dontAddDupes(data) {
+
+            function keyFor(item) {
+                return item.geometry.coordinates[0] + ':' + item.geometry.coordinates[1];
+            }
+
+            var indexed = {};
+            data.features.forEach(function (item) {
+                // a duplicate key will replace the existing entry
+                indexed[keyFor(item)] = item;
+            });
+
+            // turn the results back into an array of just values.
+            var result = Object.keys(indexed).map(function (k) {
+                return indexed[k];
+            });
+
+            //send the non duplicates
+            addToMap(result)
+            console.log(result);
+
+
+        }
+
+        function addToMap(result) {
+
+            map.removeLayer(group)
+
+            L.geoJson(result, {
                 pointToLayer: function (feature, ll) {
                     return L.circleMarker(ll, {
                         opacity: 0.5,
@@ -65,7 +92,9 @@
                         radius: 6
                     })
                 }
-            }).addTo(map)
+            }).addTo(group)
+
+            group.addTo(map)
         }
     </script>
 </body>

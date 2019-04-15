@@ -70,6 +70,6 @@ function saveToCsv(nData) {
 app.get('/', function (req, res) {
 
     getMyData();
-    setInterval(getMyData, 200000)
+    setInterval(getMyData, 300000)
     res.render('index.ejs');
 });
