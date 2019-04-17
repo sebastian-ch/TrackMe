@@ -21,8 +21,8 @@
     <div class='sidebar'>
         <div class='text-side'>
         <p>Where am I!</p>
-        <p>This app shows where I am and puts it on a map.</p>
-
+        <p>This NodeJS app takes my location from my phone every 5 minutes and adds it to the map. It doesn't add duplicates or locations that are too close to previously added dots.</p>
+        <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
     </div>
 
     </div>
@@ -63,7 +63,7 @@
         function dontAddDupes(data) {
 
             function keyFor(item) {
-                return item.geometry.coordinates[0] + ':' + item.geometry.coordinates[1];
+                return item.geometry.coordinates[0].toFixed(3) + ':' + item.geometry.coordinates[1].toFixed(3);
             }
 
             var indexed = {};
