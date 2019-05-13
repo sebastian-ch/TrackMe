@@ -6,6 +6,7 @@
     <meta charset='utf-8'>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href="style/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
 
@@ -16,27 +17,40 @@
     <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
     <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
     <script src="https://npmcdn.com/csv2geojson@latest/csv2geojson.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
 
 
     <div class='sidebar'>
         <div class='text-side'>
-        <p>Where am I!</p>
-        <p>This NodeJS app takes my location from my phone every 5 minutes and adds it to the map. It doesn't add duplicates or locations that are too close to previously added dots.</p>
-        <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
-    </div>
+            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so.</p>
+            <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
+
+            <button class="button" onclick="flyToGeorgia()">Georgia</button>
+            <button class="button" onclick="flyToVienna()">Vienna</button>
+        
+        <div id='data-points'></div>
 
     </div>
     <div id='map'></div>
     <script>
         var map = L.map('map', {
-            center: [48.208, 16.371],
+            center: [48.205, 16.375],
             zoom: 15
         });
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png', {
+        map.createPane('labels');
+        map.getPane('labels').style.zIndex = 650;
+        map.getPane('labels').style.pointerEvents = 'none';
+
+        var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 19
+        }).addTo(map);
+
+        var labels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            pane: 'labels'
         }).addTo(map);
 
         var group = L.layerGroup();
@@ -45,61 +59,35 @@
         function getData() {
 
             d3.csv('data/file.csv').then(function (data) {
-                csv2geojson.csv2geojson(data, {
-                    latfield: 'Latitude',
-                    lonfield: 'Longitude',
-                    delimiter: ','
-                }, function (err, data) {
-                    if (err) {
-                        console.log(err)
-                    } else {
-                        //console.log(data)
-                        dontAddDupes(data)
-                    }
-                });
+
+                document.getElementById('data-points').textContent = 'Heat map made with ' + data.length.toString() + ' data points.'
+                //dontAddDupes(data)
+                heatMapIt(data);
             })
-        }
-
-        function dontAddDupes(data) {
-
-            function keyFor(item) {
-                return item.geometry.coordinates[0].toFixed(3) + ':' + item.geometry.coordinates[1].toFixed(3);
-            }
-
-            var indexed = {};
-            data.features.forEach(function (item) {
-                // a duplicate key will replace the existing entry
-                indexed[keyFor(item)] = item;
-            });
-
-            // turn the results back into an array of just values.
-            var result = Object.keys(indexed).map(function (k) {
-                return indexed[k];
-            });
-
-            //send the non duplicates
-            addToMap(result)
-            //console.log(result);
-
 
         }
 
-        function addToMap(result) {
+        function heatMapIt(data) {
+            //console.log(data)
 
-            map.removeLayer(group)
+            var heat = L.heatLayer(data, {
+                radius: 16,
+                blur: 13,
+                maxZoom: 17,
+                minOpacity: 0.4,
+                
+            }).addTo(map);
 
-            L.geoJson(result, {
-                pointToLayer: function (feature, ll) {
-                    return L.circleMarker(ll, {
-                        opacity: 0.5,
-                        weight: 1,
-                        fillOpacity: 0.5,
-                        radius: 7
-                    })
-                }
-            }).addTo(group)
+        }
 
-            group.addTo(map)
+
+        function flyToGeorgia(){
+            map.setView([41.976, 43.433], 9);
+
+        }
+
+        function flyToVienna(){
+            map.setView([48.205, 16.375], 15)
         }
     </script>
 </body>
