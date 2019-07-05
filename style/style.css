@@ -30,16 +30,17 @@ body {
 
 
 .sidebar {
-  width: 30%;
-  margin: 10px;
+  width: 25%;
+  margin: 0px;
+  padding: 0;
   font-family: Lato, sans-serif;
   text-align: center;
 
 }
 
 .text-side {
-  width: 80%;
-  margin: 10px auto 10px auto;
+  width: 90%;
+  margin: 15px auto 15px auto; 
   text-align: center;
 }
 
@@ -58,8 +59,8 @@ a:hover {
 
   border-left: solid white 1px;
   position: absolute;
-  left: 30%;
-  width: 69%;
+  left: 25%;
+  width: 74.9%;
   top: 0;
   bottom: 0;
 }

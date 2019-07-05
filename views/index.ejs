@@ -27,6 +27,7 @@
 
             <button class="button" onclick="flyToGeorgia()">Georgia</button>
             <button class="button" onclick="flyToVienna()">Vienna</button>
+            <button class="button" onclick="flyToPH()">Philippines</button>
         
         <div id='data-points'></div>
 
@@ -34,8 +35,10 @@
     <div id='map'></div>
     <script>
         var map = L.map('map', {
-            center: [48.205, 16.375],
-            zoom: 15
+            //center: [48.205, 16.375],
+            //zoom: 15
+            center: [10.802, 119.526],
+            zoom: 10
         });
 
         map.createPane('labels');
@@ -88,6 +91,10 @@
 
         function flyToVienna(){
             map.setView([48.205, 16.375], 15)
+        }
+
+        function flyToPH(){
+            map.setView([12.007, 119.729], 7)
         }
     </script>
 </body>
