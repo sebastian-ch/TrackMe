@@ -66,6 +66,8 @@
                 document.getElementById('data-points').textContent = 'Heat map made with ' + data.length.toString() + ' data points.'
                 //dontAddDupes(data)
                 heatMapIt(data);
+                map.setView(data[data.length -1], 13);
+
             })
 
         }
