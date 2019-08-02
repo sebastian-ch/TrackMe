@@ -27,12 +27,13 @@
 
     <div class='sidebar'>
         <div class='text-side'>
-            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so.</p>
+            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so. Also adds my photos I add to flickr. It autocenters on where I am so don't stalk me pls.</p>
             <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
 
             <button class="button" onclick="flyToGeorgia()">Georgia</button>
             <button class="button" onclick="flyToVienna()">Vienna</button>
             <button class="button" onclick="flyToPH()">Philippines</button>
+            <button class="button" onclick="removePhotoLayer()">Add or Remove Photo Layer</button>
 
             <div id='data-points'></div>
 
@@ -107,6 +108,9 @@
             }
 
 
+            
+
+
             var photoLayer = L.photo.cluster().on('click', function (evt) {
 
                 var photo = evt.layer.photo,
@@ -167,6 +171,14 @@
 
                 photoLayer.add(allPhotos).addTo(map);
 
+            }
+
+            function removePhotoLayer() {
+                if (map.hasLayer(photoLayer)) {
+                   map.removeLayer(photoLayer);
+                } else {
+                    photoLayer.addTo(map);
+                }
             }
         </script>
 </body>
