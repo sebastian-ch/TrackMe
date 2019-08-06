@@ -31,15 +31,20 @@
 
     <div class='sidebar'>
         <div class='text-side'>
-            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so. Also adds my photos I add to flickr. It autocenters on where I am so don't stalk me pls.</p>
+            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so. Also adds my photos I add to flickr. It autocenters on where I am so don't stalk me pls. Started on April 10th, 2019.</p>
             <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
 
-            <button class="button" onclick="flyToGeorgia()">Georgia</button>
-            <button class="button" onclick="flyToVienna()">Vienna</button>
-            <button class="button" onclick="flyToPH()">Philippines</button>
+            <button class="button" onclick="flyToGeorgia()">Georgia</button><br>
+            <button class="button" onclick="flyToVienna()">Vienna</button><br>
+            <button class="button" onclick="flyToPH()">Philippines</button><br>
+            <button class="button" onclick="flyToDres()">Dresden</button><br>
+            <button class="button" onclick="flyToBuda()">Budapest</button><br>
+            <button class="button" onclick="flyToVarna()">Varna</button><br>
             <button class="button" onclick="removePhotoLayer()">Add or Remove Photo Layer</button>
 
             <div id='data-points'></div>
+
+            <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
 
         </div>
         <div id='map'></div>
