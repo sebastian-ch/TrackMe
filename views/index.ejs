@@ -43,7 +43,6 @@
             <button class="button" onclick="removePhotoLayer()">Add or Remove Photo Layer</button>
 
             <div id='data-points'></div>
-
             <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
 
         </div>
@@ -54,6 +53,7 @@
                 //zoom: 15
                 //center: [10.802, 119.526],
                 //zoom: 10
+                zoomControl: false
             });
 
             map.createPane('labels');
@@ -105,7 +105,6 @@
 
             function flyToGeorgia() {
                 map.setView([41.976, 43.433], 9);
-
             }
 
             function flyToVienna() {
@@ -116,10 +115,18 @@
                 map.setView([12.007, 119.729], 7)
             }
 
+            function flyToDres() {
+                map.setView([51.046, 13.759], 13);
+            }
 
+            function flyToBuda() {
+                map.setView([47.497, 19.068], 14)
+            }
+
+            function flyToVarna() {
+                map.setView([43.219, 27.957], 13)
+            }
             
-
-
             var photoLayer = L.photo.cluster().on('click', function (evt) {
 
                 var photo = evt.layer.photo,

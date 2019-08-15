@@ -12,9 +12,9 @@ body {
   border: 1px solid #f5f5f5;
   color: #f5f5f5;
   background-color: #404040;
-  padding: 13px 22px;
+  padding: 8px 18px;
   text-align: center;
-  font-size: 16px;
+  font-size: 13px;
   margin: 4px 2px;
   cursor: pointer;
 }
@@ -25,12 +25,12 @@ body {
 }
 
 #website {
-  margin: 50px;
+  margin: 30px;
   font-size: 12px;
 }
 
 #data-points {
-  margin-top: 50px;
+  margin-top: 30px;
   font-size: 12px;
 }
 
@@ -48,6 +48,7 @@ body {
   width: 90%;
   margin: 15px auto 15px auto;
   text-align: center;
+  font-size: 13px;
 }
 
 a:link,
