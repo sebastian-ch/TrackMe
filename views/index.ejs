@@ -40,7 +40,10 @@
             <button class="button" onclick="flyToDres()">Dresden</button><br>
             <button class="button" onclick="flyToBuda()">Budapest</button><br>
             <button class="button" onclick="flyToVarna()">Varna</button><br>
-            <button class="button" onclick="removePhotoLayer()">Add or Remove Photo Layer</button>
+            <button class="button" onclick="flyToParis()">Paris</button><br>
+            <button class="button" onclick="flyToLyon()">Lyon</button><br>
+            <button class="button" onclick="flyToMorocco()">Morocco</button><br>
+            <button class="photoB" id='photoButton' onclick="removePhotoLayer()">Remove Photo Layer</button>
 
             <div id='data-points'></div>
             <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
@@ -126,6 +129,22 @@
             function flyToVarna() {
                 map.setView([43.219, 27.957], 13)
             }
+
+            function flyToParis() {
+                map.setView([48.848, 2.356], 14)
+            }
+
+            function flyToLyon() {
+                map.setView([45.754, 4.837], 14)
+            }
+
+            function flyToMorocco() {
+                map.setView([35.0799, -5.2495], 13)
+            }
+
+            function flyToSeville() {
+                map.setView([35.0799, -5.2495], 13)
+            }
             
             var photoLayer = L.photo.cluster().on('click', function (evt) {
 
@@ -191,8 +210,11 @@
 
             function removePhotoLayer() {
                 if (map.hasLayer(photoLayer)) {
+
+                    document.getElementById('photoButton').innerHTML = 'Add Photo Layer';
                    map.removeLayer(photoLayer);
                 } else {
+                    document.getElementById('photoButton').innerHTML = 'Remove Photo Layer';
                     photoLayer.addTo(map);
                 }
             }
