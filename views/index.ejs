@@ -49,6 +49,7 @@
             <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
 
         </div>
+    </div>
         <div id='map'></div>
         <script>
             var map = L.map('map', {
@@ -86,7 +87,7 @@
                         .toString() + ' data points.'
                     //dontAddDupes(data)
                     heatMapIt(data);
-                    map.setView(data[data.length - 1], 13);
+                    map.setView(data[data.length - 1], 14);
 
                 })
 
@@ -139,7 +140,7 @@
             }
 
             function flyToMorocco() {
-                map.setView([35.0799, -5.2495], 13)
+                map.setView([34.647, -4.797], 9)
             }
 
             function flyToSeville() {

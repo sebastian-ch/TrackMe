@@ -52,7 +52,7 @@ body {
 
 .sidebar {
   width: 25%;
-  margin: 0px;
+  margin: 0;
   padding: 0;
   font-family: Lato, sans-serif;
   text-align: center;
@@ -92,7 +92,7 @@ a:hover {
 
 #map {
 
-  border-left: solid white 1px;
+  border-left: solid black 1px;
   position: absolute;
   left: 25%;
   width: 74.9%;
