@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>Where Is Sebastian!</title>
+    <meta charset='utf-8'>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://i.imgur.com/IKkvFR6.png" />
+    <meta name="twitter:title" content="Sebastian Heat Map!" />
+
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="/script/Leaflet.Photo.css" />
+    <link rel="stylesheet" href="/script/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="/style/style.css" />
+
+
+</head>
+
+<body>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src="/script/leaflet.markercluster.js"></script>
+    <script src="/script/Leaflet.Photo.js"></script>
+
+
+
+    <div class='sidebar'>
+        <div class='text-side'>
+            <p>This NodeJS app makes a heat map of me. Updates every 5 minutes or so. Also adds my photos I add to flickr. It autocenters on where I am so don't stalk me pls. Started on April 10th, 2019.</p>
+            <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
+
+            <button class="button" onclick="flyToGeorgia()">Georgia</button><br>
+            <button class="button" onclick="flyToVienna()">Vienna</button><br>
+            <button class="button" onclick="flyToPH()">Philippines</button><br>
+            <button class="button" onclick="flyToDres()">Dresden</button><br>
+            <button class="button" onclick="flyToBuda()">Budapest</button><br>
+            <button class="button" onclick="flyToVarna()">Varna</button><br>
+            <button class="button" onclick="flyToParis()">Paris</button><br>
+            <button class="button" onclick="flyToLyon()">Lyon</button><br>
+            <button class="button" onclick="flyToMorocco()">Morocco</button><br>
+            <button class="photoB" id='photoButton' onclick="removePhotoLayer()">Remove Photo Layer</button>
+
+            <div id='data-points'></div>
+            <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
+
+        </div>
+    </div>
+        <div id='map'></div>
+        <script>
+            var map = L.map('map', {
+                //center: [48.205, 16.375],
+                //zoom: 15
+                //center: [10.802, 119.526],
+                //zoom: 10
+                zoomControl: false
+            });
+
+            map.createPane('labels');
+            map.getPane('labels').style.zIndex = 650;
+            map.getPane('labels').style.pointerEvents = 'none';
+
+            var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            var labels = L.tileLayer(
+                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    pane: 'labels'
+                }).addTo(map);
+
+            var group = L.layerGroup();
+            getData();
+
+            function getData() {
+
+                d3.csv('data/file.csv').then(function (data) {
+
+                    document.getElementById('data-points').textContent = 'Heat map made with ' + data.length
+                        .toString() + ' data points.'
+
+
+                    //console.log(data);
+
+                    
+                    filterData(data)
+                    
+                    //heatMapIt(data);
+                    map.setView(data[data.length - 1], 14);
+
+                })
+
+            }
+
+            function filterData(data) {
+
+                var today = new Date();
+                var dd = today.getDate();
+                var month = today.getMonth();
+                var yr = today.getFullYear();
+                var fullDate =  yr + '-' + month + '-' + dd
+                var todaysInfo = []
+
+                data.forEach(x => {
+
+                    var tod = x.Date.split('T')[0]
+                   // console.log('date: ' + fullDate)
+                    //console.log('tod :' + tod);
+
+                    if (fullDate == tod) {
+                        console.log(tod)
+                        todaysInfo.push(x)
+                    }
+
+                })
+                
+              /*  for (var x in data) {
+
+                   // console.log(data);
+                    //var tod = data[x].Date.split('T')[0];
+
+                    if (fullDate == tod) {
+                        console.log(rtod);
+                    }
+
+                } */
+
+                //console.log(todaysInfo)
+               // heatMapIt(todaysInfo)
+            }
+
+            function heatMapIt(data) {
+                //console.log(data)
+
+                var heat = L.heatLayer(data, {
+                    radius: 16,
+                    blur: 13,
+                    maxZoom: 17,
+                    minOpacity: 0.4,
+
+                }).addTo(map);
+
+            }
+
+            
+        </script>
+</body>
+
+</html>
