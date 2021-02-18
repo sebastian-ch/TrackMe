@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>Where Is Sebastian!</title>
+    <meta charset='utf-8'>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://i.imgur.com/IKkvFR6.png" />
+    <meta name="twitter:title" content="Sebastian Heat Map!" />
+
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="/script/Leaflet.Photo.css" />
+    <link rel="stylesheet" href="/script/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="/style/style.css" />
+
+
+</head>
+
+<body>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="https://d3js.org/d3-dsv.v1.min.js"></script>
+    <script src="https://d3js.org/d3-fetch.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+    <script src="/script/leaflet.markercluster.js"></script>
+    <script src="/script/Leaflet.Photo.js"></script>
+
+
+
+    <div class='sidebar'>
+        <div class='text-side'>
+            <p>This NodeJS app makes a heat map of me. It updated every 5 minutes. Also adds my photos I add to flickr. Started on April 10th, 2019. Ended December 28th, 2020.</p>
+            <p>View the code <a href="https://github.com/sebastian-ch/TrackMe" target="_blank">here</a></p>
+
+            <button class="button" onclick="flyToGeorgia()">Georgia</button><br>
+            <button class="button" onclick="flyToVienna()">Vienna</button><br>
+            <button class="button" onclick="flyToPH()">Philippines</button><br>
+            <button class="button" onclick="flyToDres()">Dresden</button><br>
+            <button class="button" onclick="flyToBuda()">Budapest</button><br>
+            <button class="button" onclick="flyToVarna()">Varna</button><br>
+            <button class="button" onclick="flyToParis()">Paris</button><br>
+            <button class="button" onclick="flyToLyon()">Lyon</button><br>
+            <button class="button" onclick="flyToMorocco()">Morocco</button><br>
+            <button class="photoB" id='photoButton' onclick="removePhotoLayer()">Remove Photo Layer</button>
+
+            <div id='data-points'></div>
+            <div id='website'><a href="https://sebastian-ch.github.io" target="_blank">other stuff I made</a></div>
+
+        </div>
+    </div>
+        <div id='map'></div>
+        <script>
+            var map = L.map('map', {
+                //center: [48.205, 16.375],
+                //zoom: 15
+                //center: [10.802, 119.526],
+                //zoom: 10
+                zoomControl: false
+            });
+
+            map.createPane('labels');
+            map.getPane('labels').style.zIndex = 650;
+            map.getPane('labels').style.pointerEvents = 'none';
+
+            var basemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
+
+            var labels = L.tileLayer(
+                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    pane: 'labels'
+                }).addTo(map);
+
+            var group = L.layerGroup();
+            getData();
+
+            function getData() {
+
+                d3.csv('data/file.csv').then(function (data) {
+
+                    document.getElementById('data-points').textContent = 'Heat map made with ' + data.length
+                        .toString() + ' data points.'
+                    //dontAddDupes(data)
+                    heatMapIt(data);
+                    map.setView([48.848, 2.356], 14);
+
+                })
+
+            }
+
+            function heatMapIt(data) {
+                //console.log(data)
+
+                var heat = L.heatLayer(data, {
+                    radius: 16,
+                    blur: 13,
+                    maxZoom: 17,
+                    minOpacity: 0.4,
+
+                }).addTo(map);
+
+            }
+
+
+            function flyToGeorgia() {
+                map.setView([41.976, 43.433], 9);
+            }
+
+            function flyToVienna() {
+                map.setView([48.205, 16.375], 15)
+            }
+
+            function flyToPH() {
+                map.setView([12.007, 119.729], 7)
+            }
+
+            function flyToDres() {
+                map.setView([51.046, 13.759], 13);
+            }
+
+            function flyToBuda() {
+                map.setView([47.497, 19.068], 14)
+            }
+
+            function flyToVarna() {
+                map.setView([43.219, 27.957], 13)
+            }
+
+            function flyToParis() {
+                map.setView([48.848, 2.356], 14)
+            }
+
+            function flyToLyon() {
+                map.setView([45.754, 4.837], 14)
+            }
+
+            function flyToMorocco() {
+                map.setView([34.647, -4.797], 9)
+            }
+
+            function flyToSeville() {
+                map.setView([35.0799, -5.2495], 13)
+            }
+            
+            var photoLayer = L.photo.cluster().on('click', function (evt) {
+
+                var photo = evt.layer.photo,
+                    template =
+                    '<img src="{thumbnail}"/></a><p><b>{date}</b></p><br><a href="{fullPic}" target="_blank"><b>Full Image</b></a>';
+
+                evt.layer.bindPopup(L.Util.template(template, photo), {
+                    className: 'leaflet-popup-photo',
+                    minWidth: 300,
+
+                }).openPopup();
+            });
+
+
+            var flickrKey = '&api_key=e4dd71a1bf7d41f467b8dc7aa8e987fd',
+                userID = '&user_id=153002014@N03',
+                tags = '&tags=sebstravel',
+                flickrStart = "https://api.flickr.com/services/rest/?method=",
+                flickrFormat = "&extras=media,date_taken,geo,url_n,url_o&format=json&has_geo=1&nojsoncallback=1",
+                flickrGetPhotoData = flickrStart + 'flickr.photos.search' + flickrKey + tags + flickrFormat;
+            //getPhotosWithBbox = flickrStart + 'flickr.photos.search' + flickrKey + tags + flickrBoundingBox + flickrFormat;
+            d3.json(flickrGetPhotoData, {
+                crossOrigin: "anonymous"
+            }).then(function (data) {
+                getPics(data.photos);
+            });
+
+
+            function getPics(data) {
+
+                var allPhotos = [];
+                allPhotos.length = 0;
+
+                console.log(data)
+
+                data.photo.forEach(function (pic) {
+
+                    allPhotos.push({
+                        date: pic.datetaken,
+                        //parsedDate: Date.parse(pic.datetaken).toString('MMMM dS, yyyy'),
+                        farm: pic.farm,
+                        id: pic.id,
+                        secret: pic.secret,
+                        server: pic.server,
+                        media: pic.media,
+                        lat: pic.latitude,
+                        lng: pic.longitude,
+                        thumbnail: pic.url_n,
+                        fullPic: pic.url_o
+                    });
+                });
+
+                mapPhotos(allPhotos);
+
+            }
+
+            function mapPhotos(allPhotos) {
+
+                photoLayer.add(allPhotos).addTo(map);
+
+            }
+
+            function removePhotoLayer() {
+                if (map.hasLayer(photoLayer)) {
+
+                    document.getElementById('photoButton').innerHTML = 'Add Photo Layer';
+                   map.removeLayer(photoLayer);
+                } else {
+                    document.getElementById('photoButton').innerHTML = 'Remove Photo Layer';
+                    photoLayer.addTo(map);
+                }
+            }
+        </script>
+</body>
+
+</html>
